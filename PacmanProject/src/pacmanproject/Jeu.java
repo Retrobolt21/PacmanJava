@@ -1,4 +1,5 @@
 package pacmanproject;
+import pacmanproject.fantom;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,9 +9,15 @@ import org.newdawn.slick.tiled.TiledMap;
  *
  * @author Benjamin et Corentin
  */
+
+enum Direction {
+    UP, DOWN, RIGHT, LEFT
+}
+
 public class Jeu extends BasicGame {
     private TiledMap map;
     private Image imgPacman;
+    private Image imgPacmanAnim;
     int indexCalqueMurs;
     float imgPacmanPosX;
     float imgPacmanPosY;
@@ -19,9 +26,15 @@ public class Jeu extends BasicGame {
     float imgPacmanMovingStepBase;
     char directionPacman;
     
+    fantom fantom1;
+    
+    private Direction direction;
+    
     int tileSize;
 
     int timeI;
+    int timeAnimationPacman;
+    int animationPacman;
     
     Timer timer;
     
@@ -33,18 +46,26 @@ public class Jeu extends BasicGame {
     public void init(GameContainer gc) throws SlickException {
         map = new TiledMap("./maps/map_pacman_final.tmx");
         imgPacman = new Image("./images/pacman.png");
+        imgPacmanAnim = new Image("./sprites/pacman.png");
         indexCalqueMurs = map.getLayerIndex("murs");
         imgPacmanPosX = 320;
         imgPacmanPosY = 320;
         imgPacmanDiametre = 32;
         imgPacmanMovingStepBase = 32f;
         imgPacmanMovingStep = 32f;
-        directionPacman = 'D';
+        directionPacman = 'D';        
+        
+        direction = Direction.RIGHT;
+        
         timer = new Timer();
         
         tileSize = 32;
         
         timeI = 0;
+        timeAnimationPacman = 0;
+        animationPacman = 0;
+        
+        fantom1 = new fantom(100, 100, imgPacman, 1);
     }
 
     @Override
@@ -59,8 +80,10 @@ public class Jeu extends BasicGame {
         int posY = Math.round(imgPacmanPosY) / tileSize;
         
         int vitessePacman = 500; //En ms
+        int vitesseAnimationPacman = 200; //En ms
         
         timeI += i;
+        timeAnimationPacman += i;
         //System.out.println("temps : " + timeI);
         
         //Récupération input
@@ -69,15 +92,19 @@ public class Jeu extends BasicGame {
         //Direction Pacman continu dans la direction Pressed
         if (input.isKeyPressed(Input.KEY_RIGHT)) {
             directionPacman = 'R';
+            direction = Direction.RIGHT;
         }
         if (input.isKeyPressed(Input.KEY_LEFT)) {
             directionPacman = 'L';
+            direction = Direction.LEFT;
         }
         if (input.isKeyPressed(Input.KEY_UP)) {
             directionPacman = 'U';
+            direction = Direction.UP;
         }
         if (input.isKeyPressed(Input.KEY_DOWN)) {
             directionPacman = 'D';
+            direction = Direction.DOWN;
         }
         
         //Test Timer Moove pacman
@@ -118,15 +145,86 @@ public class Jeu extends BasicGame {
         } else if (imgPacmanPosY > fenetreLimitebas) {
             imgPacmanPosY = fenetreLimitebas;
         }
+        
+        //Time Animation Pacman
+        if (timeAnimationPacman > vitesseAnimationPacman) {
+            animationPacman++;
+            timeAnimationPacman = 0;
+        }
     }
 
     @Override
     public void render(GameContainer gc, Graphics grphcs) throws SlickException {        
-        int largeur = 32;
-        int hauteur = 32;
+        //variables animation
+        int tailleSubImage = 16;
+        int decouper_X1 = tailleSubImage * 1; 
+        int decouper_Y1 = tailleSubImage * 1;        
+        int decouper_X2 = tailleSubImage * 2;
+        int decouper_Y2 = tailleSubImage * 2;
+        
+        //Switch Case Animation pacman
+        switch(animationPacman % 2) {
+            case 0 :
+                switch(direction) {
+                    case RIGHT :                       
+                        decouper_X1 = tailleSubImage * 0;
+                        decouper_Y1 = tailleSubImage * 0;
+                        decouper_X2 = tailleSubImage * 1;
+                        decouper_Y2 = tailleSubImage * 1;
+                        break;
+                    case LEFT :
+                        decouper_X1 = tailleSubImage * 0;
+                        decouper_Y1 = tailleSubImage * 1;
+                        decouper_X2 = tailleSubImage * 1;
+                        decouper_Y2 = tailleSubImage * 2;
+                        break;
+                    case UP :
+                        decouper_X1 = tailleSubImage * 0;
+                        decouper_Y1 = tailleSubImage * 2;
+                        decouper_X2 = tailleSubImage * 1;
+                        decouper_Y2 = tailleSubImage * 3;
+                        break;
+                    case DOWN :
+                        decouper_X1 = tailleSubImage * 0;
+                        decouper_Y1 = tailleSubImage * 3;
+                        decouper_X2 = tailleSubImage * 1;
+                        decouper_Y2 = tailleSubImage * 4;
+                        break;
+                }
+                break;
+            case 1 :
+                switch(direction) {
+                    case RIGHT :                       
+                        decouper_X1 = tailleSubImage * 1;
+                        decouper_Y1 = tailleSubImage * 0;
+                        decouper_X2 = tailleSubImage * 2;
+                        decouper_Y2 = tailleSubImage * 1;
+                        break;
+                    case LEFT :
+                        decouper_X1 = tailleSubImage * 1;
+                        decouper_Y1 = tailleSubImage * 1;
+                        decouper_X2 = tailleSubImage * 2;
+                        decouper_Y2 = tailleSubImage * 2;
+                        break;
+                    case UP :
+                        decouper_X1 = tailleSubImage * 1;
+                        decouper_Y1 = tailleSubImage * 2;
+                        decouper_X2 = tailleSubImage * 2;
+                        decouper_Y2 = tailleSubImage * 3;
+                        break;
+                    case DOWN :
+                        decouper_X1 = tailleSubImage * 1;
+                        decouper_Y1 = tailleSubImage * 3;
+                        decouper_X2 = tailleSubImage * 2;
+                        decouper_Y2 = tailleSubImage * 4;
+                        break;
+                }
+                break;
+        }
         
         map.render(0,0);
-        imgPacman.draw(imgPacmanPosX, imgPacmanPosY, largeur, hauteur);
+        imgPacmanAnim.draw(imgPacmanPosX, imgPacmanPosY, imgPacmanPosX + 32, imgPacmanPosY + 32, decouper_X1, decouper_Y1, decouper_X2, decouper_Y2);
+        fantom1.drawFantom();
     }
     
 }
