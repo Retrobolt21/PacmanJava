@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="left-up" width="21" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
+ <tileset firstgid="1" name="basicTileset" tilewidth="32" tileheight="32" tilecount="128" columns="8">
+  <image source="basicTileset.png" width="256" height="512"/>
+ </tileset>
+ <layer id="2" name="fond" width="21" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNkYGBgHMWjeBSP4lE8ikfxsMIAGiOnSuAHAAA=
+  </data>
+ </layer>
+ <layer id="3" name="murs" width="21" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACrWUWw7AIAgEvWMv6FH70yaEMLtYK4nxBeuUomOcsWutTbUfNcV5U80zWx4/DDPGdvowlpyOr+LtcBJ35ac0C+T2ntIkXsGHmru28t8Nm80n1UzwXdKkWMrn128nW+FU9ehykzUdn1t/3xbH2b1HxBn9FRedTZoUo/oUU3ISr7sLTrPipXlHk94Kt06au1bU5y/tlN1c/6Te4AcAAA==
+  </data>
+ </layer>
+ <layer id="4" name="porte" width="21" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAWjYBRgAwID7YBRMApGwSigAAAAsytxRuAHAAA=
+  </data>
+ </layer>
+</map>
