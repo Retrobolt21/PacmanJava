@@ -1,4 +1,5 @@
 package pacmanproject;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.*;
@@ -15,8 +16,14 @@ public class Jeu extends BasicGame {
     float imgPacmanPosY;
     int imgPacmanDiametre;
     float imgPacmanMovingStep;
+    float imgPacmanMovingStepBase;
+    char directionPacman;
     
     int tileSize;
+
+    int timeI;
+    
+    Timer timer;
     
     public Jeu(String titre) {
         super(titre);
@@ -30,9 +37,14 @@ public class Jeu extends BasicGame {
         imgPacmanPosX = 320;
         imgPacmanPosY = 320;
         imgPacmanDiametre = 32;
+        imgPacmanMovingStepBase = 32f;
         imgPacmanMovingStep = 32f;
+        directionPacman = 'D';
+        timer = new Timer();
         
         tileSize = 32;
+        
+        timeI = 0;
     }
 
     @Override
@@ -46,26 +58,54 @@ public class Jeu extends BasicGame {
         int posX = Math.round(imgPacmanPosX) / tileSize;
         int posY = Math.round(imgPacmanPosY) / tileSize;
         
+        int vitessePacman = 500; //En ms
+        
+        timeI += i;
+        //System.out.println("temps : " + timeI);
+        
         //Récupération input
-        Input input = gc.getInput();        
+        Input input = gc.getInput();
+
+        //Direction Pacman continu dans la direction Pressed
+        if (input.isKeyPressed(Input.KEY_RIGHT)) {
+            directionPacman = 'R';
+        }
+        if (input.isKeyPressed(Input.KEY_LEFT)) {
+            directionPacman = 'L';
+        }
+        if (input.isKeyPressed(Input.KEY_UP)) {
+            directionPacman = 'U';
+        }
+        if (input.isKeyPressed(Input.KEY_DOWN)) {
+            directionPacman = 'D';
+        }
+        
+        //Test Timer Moove pacman
+        //timer.schedule(new MovePacman(imgPacmanPosX, imgPacmanPosY, indexCalqueMurs, imgPacmanMovingStep, map, directionPacman, tileSize), 0, 5000);
         
         //Direction Pacman
-        if (input.isKeyPressed(Input.KEY_RIGHT)) {
-            if (map.getTileId(posX + 1, posY, indexCalqueMurs) == 0) {
-                imgPacmanPosX += imgPacmanMovingStep;
+        if (timeI > vitessePacman) {
+            switch (directionPacman) {
+            case 'R':
+                if (map.getTileId(posX + 1, posY, indexCalqueMurs) == 0) {
+                    imgPacmanPosX += imgPacmanMovingStep;
+                }   break;
+            case 'L':
+                if (map.getTileId(posX - 1, posY, indexCalqueMurs) == 0) {
+                    imgPacmanPosX -= imgPacmanMovingStep;
+                }   break;
+            case 'U':
+                if (map.getTileId(posX, posY - 1, indexCalqueMurs) == 0) {
+                    imgPacmanPosY -= imgPacmanMovingStep;
+                }   break;
+            case 'D':
+                if (map.getTileId(posX, posY + 1, indexCalqueMurs) == 0) {
+                    imgPacmanPosY += imgPacmanMovingStep;
+                }   break;             
+            default:
+                break;
             }
-        } else if (input.isKeyPressed(Input.KEY_LEFT)) {
-            if (map.getTileId(posX - 1, posY, indexCalqueMurs) == 0) {
-                imgPacmanPosX -= imgPacmanMovingStep;
-            }             
-        } else if (input.isKeyPressed(Input.KEY_UP)) {
-            if (map.getTileId(posX, posY - 1, indexCalqueMurs) == 0) {
-                imgPacmanPosY -= imgPacmanMovingStep; 
-            } 
-        } else if (input.isKeyPressed(Input.KEY_DOWN)) {
-            if (map.getTileId(posX, posY + 1, indexCalqueMurs) == 0) {
-                imgPacmanPosY += imgPacmanMovingStep;
-            }             
+            timeI = 0;
         }        
         
         //Empêcher de sortir de la map

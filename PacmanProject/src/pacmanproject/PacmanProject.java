@@ -18,8 +18,7 @@ public class PacmanProject {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) {        
         int largeurAffichage = 672;
         int hauteurAffichage = 768;
         boolean siPleinEcran = false;
@@ -27,6 +26,7 @@ public class PacmanProject {
         try {
             AppGameContainer app = new AppGameContainer( new Jeu("Mon gentil premier jeu") );
             app.setDisplayMode(largeurAffichage, hauteurAffichage, siPleinEcran);
+            app.setTargetFrameRate(60);
             app.start();
         } catch (SlickException ex) {
             //System.out.println(ex);
