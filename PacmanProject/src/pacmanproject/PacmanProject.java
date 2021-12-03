@@ -17,6 +17,7 @@ public class PacmanProject {
     public static void main(String[] args) {
         System.out.println("Test github !");
         System.out.println("Test 2 github");
+        System.out.println("Test Moi github");
     }
     
 }
