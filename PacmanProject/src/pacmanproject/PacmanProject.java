@@ -19,14 +19,9 @@ public class PacmanProject {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //System.out.println("Test github !");
-        //System.out.println("Test 2 github");
-        //System.out.println("Test Moi github");
         
         int largeurAffichage = 672;
         int hauteurAffichage = 768;
-        //int largeurAffichage = 1400;
-        //int hauteurAffichage = 800;
         boolean siPleinEcran = false;
         
         try {
