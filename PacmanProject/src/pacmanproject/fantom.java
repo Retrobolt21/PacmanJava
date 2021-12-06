@@ -15,6 +15,7 @@ import org.newdawn.slick.tiled.TiledMap;
  *
  * @author ETI
  */
+
 public class fantom {
     private Image imgFantom;
     int posX;
@@ -26,7 +27,10 @@ public class fantom {
     float movingStep = 32f;
     char directionFantom = 'R';
     int timeAnimationFantome = 0;
+    int vitesseAnimFantom = 200; //Vitesse en Ms
+    int compteurVitesseAnimFantom = 0;
     int vitesseFantome;
+    int animationFantom = 0;
     boolean fantomInit = false;
     
     public fantom(int posX, int posY, Image imgFantom, int typeFantom, int vitesseFantome) {
@@ -34,10 +38,90 @@ public class fantom {
         this.posY = posY;
         this.imgFantom = imgFantom;
         this.vitesseFantome = vitesseFantome;
+        this.typeFantom = typeFantom + 3;
     }
     
-    public void drawFantom() {
-        imgFantom.draw(posX, posY, 32, 32);
+    public void drawFantom(int i) {
+        //variables animation
+        int tailleSubImage = 16;
+        int decouper_X1 = tailleSubImage * 1; 
+        int decouper_Y1 = tailleSubImage * 1;        
+        int decouper_X2 = tailleSubImage * 2;
+        int decouper_Y2 = tailleSubImage * 2;
+        
+        //Time Animation Pacman
+        if (compteurVitesseAnimFantom > vitesseAnimFantom) {
+            animationFantom++;
+            compteurVitesseAnimFantom = 0;
+        }
+        System.out.println(animationFantom);
+        compteurVitesseAnimFantom+=i;
+              
+        //Switch Case Animation pacman
+        switch(animationFantom % 2) {
+            case 0 :
+                switch(directionFantom) {
+                    case 'R' :                       
+                        decouper_X1 = tailleSubImage * 0;
+                        decouper_Y1 = tailleSubImage * typeFantom;
+                        decouper_X2 = tailleSubImage * 1;
+                        decouper_Y2 = tailleSubImage * (typeFantom + 1);
+                        break;
+                    case 'L' :
+                        decouper_X1 = tailleSubImage * 2;
+                        decouper_Y1 = tailleSubImage * typeFantom;
+                        decouper_X2 = tailleSubImage * 3;
+                        decouper_Y2 = tailleSubImage * (typeFantom + 1);
+                        break;
+                    case 'U' :
+                        decouper_X1 = tailleSubImage * 4;
+                        decouper_Y1 = tailleSubImage * typeFantom;
+                        decouper_X2 = tailleSubImage * 5;
+                        decouper_Y2 = tailleSubImage * (typeFantom + 1);
+                        break;
+                    case 'D' :
+                        decouper_X1 = tailleSubImage * 6;
+                        decouper_Y1 = tailleSubImage * typeFantom;
+                        decouper_X2 = tailleSubImage * 7;
+                        decouper_Y2 = tailleSubImage * (typeFantom + 1);
+                        break;
+                }
+                break;
+            case 1 :
+                switch(directionFantom) {
+                    case 'R' :                       
+                        decouper_X1 = tailleSubImage * 1;
+                        decouper_Y1 = tailleSubImage * typeFantom;
+                        decouper_X2 = tailleSubImage * 2;
+                        decouper_Y2 = tailleSubImage * (typeFantom + 1);
+                        break;
+                    case 'L' :
+                        decouper_X1 = tailleSubImage * 3;
+                        decouper_Y1 = tailleSubImage * typeFantom;
+                        decouper_X2 = tailleSubImage * 4;
+                        decouper_Y2 = tailleSubImage * (typeFantom + 1);
+                        break;
+                    case 'U' :
+                        decouper_X1 = tailleSubImage * 5;
+                        decouper_Y1 = tailleSubImage * typeFantom;
+                        decouper_X2 = tailleSubImage * 6;
+                        decouper_Y2 = tailleSubImage * (typeFantom + 1);
+                        break;
+                    case 'D' :
+                        decouper_X1 = tailleSubImage * 7;
+                        decouper_Y1 = tailleSubImage * typeFantom;
+                        decouper_X2 = tailleSubImage * 8;
+                        decouper_Y2 = tailleSubImage * (typeFantom + 1);
+                        break;
+                }
+                break;
+        }
+        
+        //Ancien Draw
+        //imgFantom.draw(posX, posY, 32, 32);
+        //Nouveau Draw
+        imgFantom.draw(posX, posY, posX + 32, posY + 32, decouper_X1, decouper_Y1, decouper_X2, decouper_Y2);
+        
     }
     
     public int getPosX() {
@@ -48,7 +132,7 @@ public class fantom {
         return posY / tileSize;
     }
     
-    public void mooveFantom(int tileID_LEFT, int tileID_RIGHT, int tileID_DOWN, int tileID_UP) throws SlickException {
+    public void mooveFantom(int tileID_LEFT, int tileID_RIGHT, int tileID_DOWN, int tileID_UP, int  i) throws SlickException {
         timeAnimationFantome++;            
         
         //Direction Fantom
@@ -228,8 +312,8 @@ public class fantom {
             }
             timeAnimationFantome = 0;
         }
-        System.out.println(directionFantom);
-        drawFantom();
+        //System.out.println(directionFantom);
+        drawFantom(i);
         }
     
     private char aleaDirection() {

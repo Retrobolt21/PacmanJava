@@ -26,6 +26,8 @@ public class Jeu extends BasicGame {
     float imgPacmanMovingStepBase;
     char directionPacman;
     
+    public int vitesseI;
+    
     //Variable FantomTileID
     int tileID_LEFT;
     int tileID_RIGHT;
@@ -33,6 +35,7 @@ public class Jeu extends BasicGame {
     int tileID_UP;
     
     fantom fantom1;
+    fantom fantom2;
     
     private Direction direction;
     
@@ -52,7 +55,7 @@ public class Jeu extends BasicGame {
     public void init(GameContainer gc) throws SlickException {
         map = new TiledMap("./maps/map_pacman_final.tmx");
         imgPacman = new Image("./images/pacman.png");
-        imgPacmanAnim = new Image("./sprites/pacman.png");
+        imgPacmanAnim = new Image("./sprites/pacmanv2.png");
         indexCalqueMurs = map.getLayerIndex("murs");
         imgPacmanPosX = 320;
         imgPacmanPosY = 320;
@@ -60,6 +63,8 @@ public class Jeu extends BasicGame {
         imgPacmanMovingStepBase = 32f;
         imgPacmanMovingStep = 32f;
         directionPacman = 'D';  
+        
+        vitesseI = 0;
         
         direction = Direction.RIGHT;
         
@@ -71,7 +76,8 @@ public class Jeu extends BasicGame {
         timeAnimationPacman = 0;
         animationPacman = 0;
         
-        fantom1 = new fantom(64, 64, imgPacman, 1, 20);
+        fantom1 = new fantom(64, 64, imgPacmanAnim, 1, 20);
+        fantom2 = new fantom(256, 256, imgPacmanAnim, 2, 20);
     }
 
     @Override
@@ -83,7 +89,9 @@ public class Jeu extends BasicGame {
         int fenetreLimiteDroite = largeurFenetre - imgPacmanDiametre;
         int fenetreLimitebas = hauteurFenetre - imgPacmanDiametre;
         int posX = Math.round(imgPacmanPosX) / tileSize;
-        int posY = Math.round(imgPacmanPosY) / tileSize;        
+        int posY = Math.round(imgPacmanPosY) / tileSize;  
+        
+        vitesseI = i;
         
         int vitessePacman = 300; //En ms
         int vitesseAnimationPacman = 150; //En ms
@@ -236,7 +244,14 @@ public class Jeu extends BasicGame {
         tileID_UP = map.getTileId(fantom1.getPosX(), fantom1.getPosY() - 1, indexCalqueMurs);
         tileID_DOWN = map.getTileId(fantom1.getPosX(), fantom1.getPosY() + 1, indexCalqueMurs);
         
-        fantom1.mooveFantom(tileID_LEFT, tileID_RIGHT, tileID_DOWN, tileID_UP);
+        fantom1.mooveFantom(tileID_LEFT, tileID_RIGHT, tileID_DOWN, tileID_UP, vitesseI);
+        
+        tileID_RIGHT = map.getTileId(fantom2.getPosX() + 1, fantom2.getPosY(), indexCalqueMurs);
+        tileID_LEFT = map.getTileId(fantom2.getPosX() - 1, fantom2.getPosY(), indexCalqueMurs);
+        tileID_UP = map.getTileId(fantom2.getPosX(), fantom2.getPosY() - 1, indexCalqueMurs);
+        tileID_DOWN = map.getTileId(fantom2.getPosX(), fantom2.getPosY() + 1, indexCalqueMurs);
+        
+        fantom2.mooveFantom(tileID_LEFT, tileID_RIGHT, tileID_DOWN, tileID_UP, vitesseI);
         //fantom1.drawFantom();
     }
     
