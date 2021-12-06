@@ -26,6 +26,12 @@ public class Jeu extends BasicGame {
     float imgPacmanMovingStepBase;
     char directionPacman;
     
+    //Variable FantomTileID
+    int tileID_LEFT;
+    int tileID_RIGHT;
+    int tileID_DOWN;
+    int tileID_UP;
+    
     fantom fantom1;
     
     private Direction direction;
@@ -53,7 +59,7 @@ public class Jeu extends BasicGame {
         imgPacmanDiametre = 32;
         imgPacmanMovingStepBase = 32f;
         imgPacmanMovingStep = 32f;
-        directionPacman = 'D';        
+        directionPacman = 'D';  
         
         direction = Direction.RIGHT;
         
@@ -65,7 +71,7 @@ public class Jeu extends BasicGame {
         timeAnimationPacman = 0;
         animationPacman = 0;
         
-        fantom1 = new fantom(100, 100, imgPacman, 1);
+        fantom1 = new fantom(64, 64, imgPacman, 1, 20);
     }
 
     @Override
@@ -77,10 +83,10 @@ public class Jeu extends BasicGame {
         int fenetreLimiteDroite = largeurFenetre - imgPacmanDiametre;
         int fenetreLimitebas = hauteurFenetre - imgPacmanDiametre;
         int posX = Math.round(imgPacmanPosX) / tileSize;
-        int posY = Math.round(imgPacmanPosY) / tileSize;
+        int posY = Math.round(imgPacmanPosY) / tileSize;        
         
-        int vitessePacman = 500; //En ms
-        int vitesseAnimationPacman = 200; //En ms
+        int vitessePacman = 300; //En ms
+        int vitesseAnimationPacman = 150; //En ms
         
         timeI += i;
         timeAnimationPacman += i;
@@ -150,7 +156,7 @@ public class Jeu extends BasicGame {
         if (timeAnimationPacman > vitesseAnimationPacman) {
             animationPacman++;
             timeAnimationPacman = 0;
-        }
+        }        
     }
 
     @Override
@@ -224,7 +230,14 @@ public class Jeu extends BasicGame {
         
         map.render(0,0);
         imgPacmanAnim.draw(imgPacmanPosX, imgPacmanPosY, imgPacmanPosX + 32, imgPacmanPosY + 32, decouper_X1, decouper_Y1, decouper_X2, decouper_Y2);
-        fantom1.drawFantom();
+    
+        tileID_RIGHT = map.getTileId(fantom1.getPosX() + 1, fantom1.getPosY(), indexCalqueMurs);
+        tileID_LEFT = map.getTileId(fantom1.getPosX() - 1, fantom1.getPosY(), indexCalqueMurs);
+        tileID_UP = map.getTileId(fantom1.getPosX(), fantom1.getPosY() - 1, indexCalqueMurs);
+        tileID_DOWN = map.getTileId(fantom1.getPosX(), fantom1.getPosY() + 1, indexCalqueMurs);
+        
+        fantom1.mooveFantom(tileID_LEFT, tileID_RIGHT, tileID_DOWN, tileID_UP);
+        //fantom1.drawFantom();
     }
     
 }
