@@ -5,10 +5,13 @@
  */
 package pacmanproject;
 
+import java.awt.Font;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -33,6 +36,9 @@ public class fantom {
     int animationFantom = 0;
     boolean fantomInit = false;
     
+    Font font = new Font("Verdana", Font.BOLD, 40);
+    TrueTypeFont trueTypeFont = new TrueTypeFont(font, true);
+    
     public fantom(int posX, int posY, Image imgFantom, int typeFantom, int vitesseFantome) {
         this.posX = posX;
         this.posY = posY;
@@ -54,7 +60,7 @@ public class fantom {
             animationFantom++;
             compteurVitesseAnimFantom = 0;
         }
-        System.out.println(animationFantom);
+        //System.out.println(animationFantom);
         compteurVitesseAnimFantom+=i;
               
         //Switch Case Animation pacman
@@ -340,6 +346,10 @@ public class fantom {
         int random = (int) (min + (Math.random() * (max - min)));
         
         return random;
+    }
+    
+    public void gameOver() {
+        trueTypeFont.drawString(250, 250, "Game Over", Color.red);
     }
     
 }
