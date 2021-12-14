@@ -88,7 +88,8 @@ public class Jeu extends BasicGame {
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        map = new TiledMap("./maps/map_pacman_final.tmx");
+        //map = new TiledMap("./maps/map_pacman_final.tmx");
+        map = new TiledMap("./maps/mapv2.tmx");
         imgPacman = new Image("./images/pacman.png");
         imgPacmanAnim = new Image("./sprites/pacmanv2.png");
         imgBoule = new Image("./sprites/boule.png");

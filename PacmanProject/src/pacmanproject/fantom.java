@@ -349,7 +349,7 @@ public class fantom {
     }
     
     public void gameOver() {
-        trueTypeFont.drawString(250, 250, "Game Over", Color.red);
+        trueTypeFont.drawString(210, 300, "Game Over", Color.red);
     }
     
 }
